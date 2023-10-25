@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequestMapping("/question")
 public class QuestionController {
     @Autowired
     private QuestionService questionService;
@@ -25,8 +26,7 @@ public class QuestionController {
     @PostMapping ("/insertQA")
     @ResponseBody
     public ModelAndView insertQuestion (QuestionVO questionVO) {
-        QuestionVO param = questionVO;
-        int rs =questionService.insertQA(questionVO);
+        int rs = questionService.insertQA(questionVO);
         ModelAndView mav = new ModelAndView();
         mav.setViewName("redirect:/home/question");
         return mav;

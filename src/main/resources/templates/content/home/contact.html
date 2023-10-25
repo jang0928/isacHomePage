@@ -175,7 +175,7 @@
 <!--          </div>&lt;!&ndash; End Google Maps &ndash;&gt;-->
 
           <div class="col-lg-6" style="width:100%;">
-            <form action="/insertQA" id = "loginForm"method="post" role="form" class="php-email-form">
+            <form th:action="@{/question/insertQA}" id = "loginForm" method="post" role="form" class="php-email-form">
               <div class="row">
                 <div class="col-md-6 form-group">
                   <input type="text" name="COMPANY_NM" class="form-control" id="COMPANY_NM" placeholder="회사명" required="">
