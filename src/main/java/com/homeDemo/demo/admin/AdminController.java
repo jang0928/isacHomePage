@@ -3,6 +3,7 @@ package com.homeDemo.demo.admin;
 import com.homeDemo.demo.question.Pagenation;
 import com.homeDemo.demo.question.QuestionServiceImpl;
 import com.homeDemo.demo.question.QuestionVO;
+import com.homeDemo.demo.user.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,13 +14,15 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/admin")
+@SessionAttributes("user")
 public class AdminController {
     @Autowired
     QuestionServiceImpl questionService;
 
 
     @GetMapping("/qa")
-    public String goAdminQA(Model model,QuestionVO param) {
+    public String goAdminQA(Model model, QuestionVO param , @ModelAttribute("user") UserVO user) {
+
         return "content/admin/qaTable";
     }
 
@@ -31,8 +34,6 @@ public class AdminController {
         int count  = questionService.qaCount(param);
         List<QuestionVO> qaList= questionService.getQaList(param ,count);
         Pagenation pagination = new Pagenation(count, param);
-//        mv.addObject("result",qaList);
-//        mv.addObject("params",pagination);
         mv.addObject("result",qaList );
         mv.addObject("params", pagination);
         return mv;

@@ -24,8 +24,8 @@ public class AuthProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String id = (String) authentication.getPrincipal(); // 로그인 창에 입력한 email
-        String userPw = (String) authentication.getCredentials(); // 로그인 창에 입력한 password
+        String id = (String) authentication.getPrincipal(); // 로그인 창에 id
+        String userPw = (String) authentication.getCredentials(); // 로그인  password
         UserVO checkuserVO = new UserVO();
         checkuserVO.setUSER_ID(id);
         checkuserVO.setUSER_PWD(userPw);

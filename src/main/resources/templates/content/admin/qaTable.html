@@ -30,12 +30,17 @@
 
 
     <script th:inline="javascript" type="text/javascript">
-        // $('#comSearch').val();
         $('document').ready(function () {
 
             search();
 
         });
+        function enterkey() {
+            if (window.event.keyCode == 13) {
+                <!-- 여기서 form에게 submit 하라고 리모컨 버튼 누르듯 조종하는 것-->
+                search()
+            }
+        }
         const search = (page) => {
             let data = {
               _csrf: $("meta[name='_csrf']").attr("content"),
@@ -61,8 +66,8 @@
                         let tableTd = '<tr>';
                         tableTd += '<td><a href="/admin/questionDetail?seq=' + result.result[i].seq + '">' + result.result[i].seq + '</a></td>';
                         tableTd += '<td>' + result.result[i].company_NM + '</td>';
-                        tableTd += '<td>' + result.result[i].mb_NM + '</td>';
                         tableTd += '<td>' + result.result[i].subject + '</td>';
+                        tableTd += '<td>' + result.result[i].mb_NM + '</td>';
                         tableTd += '<td>' + result.result[i].reg_DT + '</td>';
                         tableTd += '</tr>';
 
@@ -188,7 +193,7 @@
                     <h2>접수 내역</h2>
 
                     <ol>
-                        <li><a href="index.bak">Home</a></li>
+                        <li><a href="/">Home</a></li>
                         <li>접수 목록</li>
                     </ol>
 
@@ -221,7 +226,7 @@
                                     </div>
                                     <div class="datatable-search">
                                         <input class="datatable-input" id="comSearch" placeholder="회사명" value=""
-                                               type="text" title="Search within table">
+                                               type="text" title="Search within table" onkeyup="enterkey()">
                                         <button onclick='search()'> 조회</button>
                                     </div>
                                 </div>
@@ -263,18 +268,7 @@
         </main><!-- End #main -->
 
         <!-- ======= Footer ======= -->
-        <footer id="footer" class="footer">
-            <div class="copyright">
-                &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
-            </div>
-            <div class="credits">
-                <!-- All the links in the footer should remain intact. -->
-                <!-- You can delete the links only if you purchased the pro version. -->
-                <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-            </div>
-        </footer><!-- End Footer -->
+
 
         <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
                 class="bi bi-arrow-up-short"></i></a>
