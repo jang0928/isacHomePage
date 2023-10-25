@@ -52,7 +52,16 @@ public class AdminController {
     @PostMapping("/updateQA")
     public ModelAndView updateQA(Model model, QuestionVO param) {
         ModelAndView mv = new ModelAndView("jsonView");
-        mv.setViewName("/content/admin/detailQA");
+        int result =  questionService.qaUpdateContent(param);
+        mv.setViewName("redirect:/admin/qa");
+        return mv;
+    }
+
+    @PostMapping("/deleteQA")
+    public ModelAndView deleteQA(Model model, @RequestParam("SEQ") int param) {
+        ModelAndView mv = new ModelAndView("jsonView");
+        int result =  questionService.qaDeleteContent(param);
+        mv.setViewName("redirect:/admin/qa");
         return mv;
     }
 }

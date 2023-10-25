@@ -34,8 +34,20 @@ public class QuestionServiceImpl implements QuestionService{
         return questionRepository.qaCount(param);
     }
 
+    @Override
+    public int qaUpdateContent(QuestionVO param) {
+        return questionRepository.qaUpdateContent(param);
+    }
+
+    @Override
+    public int qaDeleteContent(int param) {
+        return questionRepository.qaDeleteContent(param);
+    }
+
 
     public QuestionVO qaListBySeq(int seq) {
         return questionRepository.qaListBySeq(seq);
     }
+
+
 }

@@ -10,4 +10,8 @@ public  interface QuestionService  {
    public  int insertQA(QuestionVO param);
 
    public int qaCount(QuestionVO param);
+
+    public int qaUpdateContent(QuestionVO param);
+
+    int qaDeleteContent(int param);
 }

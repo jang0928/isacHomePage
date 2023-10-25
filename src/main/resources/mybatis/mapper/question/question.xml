@@ -29,7 +29,28 @@
         </if>
     </select>
 
+    <update id="qaUpdateContent"  parameterType="QuestionVO">
+        UPDATE tb_question
+        SET
+            COMPANY_NM =#{COMPANY_NM}
+            ,SUBJECT=#{SUBJECT}
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(MB_NM)">
+            ,MB_NM=#{MB_NM}
+        </if>
+            ,EMAIL_ADDR=#{EMAIL_ADDR}
+            ,MESSAGE=#{MESSAGE}
+            ,LST_MOD_DT=DATE_FORMAT(now(), '%Y%m%d')
+            ,LST_MOD_ID='sadmin'
+        WHERE
+            SEQ =#{SEQ}
 
+    </update>
+
+    <delete id="qaDeleteContent"  parameterType="Integer">
+       DELETE
+           FROM tb_question
+       WHERE SEQ=#{SEQ}
+    </delete>
 
     <insert id="insertQA" parameterType="QuestionVO">
         INSERT INTO tb_question (
