@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}"
+      layout:fragment="Content">
+
+
+<style th:inline="css" type="text/css">
+    body {
+
+       height : 3000px;
+       font-family: 'nanumsquare';
+       display : flex;
+       flex-direction: column;
+    }
+   .slice {
+       margin-top: 30%;
+       color : black;
+       text-align : center;
+       transition : all 2s;
+       opacity : 0;
+       flex : 1;
+   }
+   .slice_1 {
+       color : black;
+       text-align : center;
+   }
+   .my_bg {
+        background-image: url('/css/images/dog.jpeg');
+        background-size : cover;
+        height : 10%;
+
+     h1 {
+        position: relative;
+        font-size: 60px;
+        z-index: 100;
+     }
+    }
+    .my_bg::before {
+        position: absolute;
+        content: "";
+        top:0px;
+        left:0px;
+        width: 100%;
+        height: 100%;
+          background-color: rgba(0,0,0,0.4);
+    }
+
+
+
+
+html, body {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+
+}
+
+.section {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#section1 {
+    background-color: aliceblue;
+}
+
+#section2 {
+    background-color: lightpink;
+}
+
+#section3 {
+    background-color: coral;
+}
+
+#section4 {
+    background-color: white;
+    height: 100%;
+}
+h2{
+    color : black;
+}
+
+</style>
+
+<head>
+    <title>테스트 페이지 </title>
+    <!-- inline CSS 영역-->
+
+    <!-- inline JS 영역-->
+
+</head>
+
+<body>
+<div class="section" id="section1">
+    <div id = "section1_detail">
+        <h2>나오니 ?</h2>
+    </div>
+</div>
+        <div class="section my_bg " id="section2">
+            <h2 class =slice style="fonr-size : large;">왜안나요ㅗㅗ</h2>
+        </div>
+        <div class="section" id="section3">
+            <h2 class =slice style="fonr-size : large;">왜안나요2</h2>
+        </div>
+        <div class="section" id="section4">
+            <form name="loginForm" id="loginForm" action="/select/question" method="POST">
+                <div>
+                    <div class="login_1">
+                        <button type="submit" class="lo_btn03"  style="margin-top: 5%">Login</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+</body>
+
+<script th:inline="javascript" type="text/javascript">
+
+    var mHtml = $("html");
+    var page = 1;
+    $(window).on("wheel", function(e) {
+        if(mHtml.is(":animated")) return;
+        if(e.originalEvent.deltaY > 0) {
+            if(page == 4) return;
+            page++;
+        } else if(e.originalEvent.deltaY < 0) {
+            if(page == 1) return;
+            page--;
+        }
+        var posTop =(page-1) * $(window).height();
+        mHtml.animate({scrollTop : posTop});
+    })
+
+    mHtml.animate({scrollTop : 0},10);
+        let observer = new IntersectionObserver((e) => {
+            e.forEach((box)=> {
+                if(box.isIntersecting) {
+                    box.target.style.opacity = 0.9;
+                } else {
+                    box.target.style.opacity = 0;
+                }
+            })
+        })
+        let div = document.querySelectorAll('.slice')
+        observer.observe(div[0])
+         observer.observe(div[1])
+</script>
+</html>

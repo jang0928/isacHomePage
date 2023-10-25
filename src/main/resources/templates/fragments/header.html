@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!-- Thymeleaf 선언 / headerFragment 임을 선언-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:fragment="HeaderFragment">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<style th:inline="css" type="text/css">
+
+    header article {
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin:0 auto;
+        padding:0 4rem 0 8.4rem;
+        height:100px;
+    }
+    header button {
+        color:black;
+        font-size:2rem;
+        border:0;
+        background-color:transparent;
+    }
+    header img {
+        width:100%;
+        height:100%;
+        object-fit: cover;
+    }
+    header a {
+    text-decoration: none;
+    color: black;
+    }
+
+</style>
+<script th:inline="javascript" type="text/javascript">
+    console.log('hi')
+    console.log([[${user}]])
+
+</script>
+<header id="header" class="header d-flex align-items-center">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+        <a href="/" class="logo d-flex align-items-center">
+            <!-- Uncomment the line below if you also wish to use an image logo -->
+            <!-- <img src="assets/img/logo.png" alt=""> -->
+            <h1>UpConstruction<span>.</span></h1>
+        </a>
+
+        <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+        <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a href="/home">Home</a></li>
+                <li><a href="/home/about">About</a></li>
+                <li><a href="/home/services">Services</a></li>
+                <li><a href="/home/projects">Projects</a></li>
+                <li><a href="/home/blog">Blog</a></li>
+                <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                <ul>
+                    <li><a href="#">Dropdown 1</a></li>
+                    <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                    <ul>
+                        <li><a href="#">Deep Dropdown 1</a></li>
+                        <li><a href="#">Deep Dropdown 2</a></li>
+                        <li><a href="#">Deep Dropdown 3</a></li>
+                        <li><a href="#">Deep Dropdown 4</a></li>
+                        <li><a href="#">Deep Dropdown 5</a></li>
+                    </ul>
+                </li>
+                        <li><a href="#">Dropdown 2</a></li>
+                        <li><a href="#">Dropdown 3</a></li>
+                    <li><a href="#">Dropdown 4</a></li>
+                </ul>
+                </li>
+
+                <li><a href="/home/question" class="active">Contact</a></li>
+                <li>
+                <li th:if="${user != null}">
+                    <a th:href="@{/admin/qa}" style="color:white">문의내역 확인</a>
+                </li>
+                <li th:if="${user != null}" style="color:white" th:text="|${user.NAME} 님 로그인 중|">
+                </li>
+                <span th:if="${user != null}">
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit"
+                                style="color: white;font-size: 1rem; padding: 10px 0 10px 28px;"> 로그아웃
+                        </button>
+                    </form>
+                </span>
+                <th:block th:if="${user == null}">
+                    <li id="adminLogin"><a href="/home/login">Login</a></li>
+                </th:block>
+            </ul>
+        </nav><!-- .navbar -->
+
+    </div>
+</header><!-- End Header -->
+</html>

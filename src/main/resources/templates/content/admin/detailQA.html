@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}"
+      layout:fragment="Content">
+
+
+<style th:inline="css" type="text/css">
+    .paging{margin-top:20px;white-space: nowrap; text-align: center; height: 37px; line-height:37px;}
+    .paging a{display:inline-block; border:1px solid #f7f7f7; height:35px; width:35px;  vertical-align:middle; text-align:center; text-decoration:none; font-size:15px; color:#898989;background:#f7f7f7;}
+    .paging .on{color:#fff; font-weight:bold; background:#333;}
+    .paging .prev,.pagination .next{height:35px; width:35px; border:1px solid #ebebeb;overflow:hidden;position:relative; }
+    .paging .prev.end,.pagination .next.end{height:35px; width:35px; }
+    .paging .prev{background:#ebebeb url("") no-repeat center center; margin-right:11px;}
+    .paging .prev.end{background:#ebebeb url("") no-repeat center center; margin-right:4px; border-right:0;}
+    .paging .next{background:#ebebeb url("") no-repeat center center; margin-left:12px;}
+    .paging .next.end{background:#ebebeb url("") no-repeat center center; margin-left:4px; border-left:0;}
+    .customInput {
+        width: 100%;
+        height: 32px;
+        font-size: 15px;
+        border: 0;
+        border-radius: 15px;
+        outline: none;
+        padding-left: 10px;
+        background-color: rgb(233, 233, 233);
+        border-width: 0 0 1px;
+    }
+    .gocenter {
+        justify-content:center ;
+    }
+</style>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Tables / Data - NiceAdmin Bootstrap Template</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+
+
+
+    <script th:inline="javascript" type="text/javascript">
+        let subject =$('#SUBJECT').val();
+        let company= $('#COMPANY_NM').val();
+        let MESSAGE = $('#MESSAGE').val();
+        let mb_nm =$('#MB_NM').val();
+        let email =$('#EMAIL_ADDR').val();
+
+        const updateQA = () =>
+        {
+            let confirmation = confirm("수정 하시겠습니까?");
+            if (confirmation) {
+                $("#updateQA").submit();
+                alert('수정 완료')
+            }
+
+        }
+
+
+    </script>
+
+
+    <!-- Template Main CSS File -->
+
+    <!-- =======================================================
+    * Template Name: NiceAdmin
+    * Updated: Sep 18 2023 with Bootstrap v5.3.2
+    * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+
+<!-- ======= Sidebar ======= -->
+
+    <ul class="sidebar-nav" id="sidebar-nav" style="padding: inherit;">
+        <div class="breadcrumbs d-flex align-items-center"
+        >
+            <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
+
+                <h2>상세 내역</h2>
+
+                <ol>
+                    <li><a href="/">Home</a></li>
+                    <li>접수 내용</li>
+                </ol>
+
+            </div>
+        </div><!-- End Breadcrumbs -->
+
+
+
+        <section class="section">
+            <div class="row gocenter">
+                <div class="col-lg-6">
+
+                    <div class="card">
+                        <div class="card-body">
+
+                            <!-- Horizontal Form -->
+                            <form th:action="@{/admin/updateQA}" id = "updateQA" method="post">
+                                <div class="row mb-3">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label"><h5>제목</h5></label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control customInput" id="SUBJECT" name="SUBJECT" th:value="${result.SUBJECT}" >
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label">회사명</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="COMPANY_NM" name="COMPANY_NM" th:value="${result.COMPANY_NM}" >
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="inputEmail3" class="col-sm-2 col-form-label" >이름</label>
+                                    <div class="col-sm-10">
+                                        <input type="email" class="form-control" id="MB_NM" name="MB_NM" th:value="${result.MB_NM}">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="inputPassword3" class="col-sm-2 col-form-label">이메일</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="EMAIL_ADDR" name="EMAIL_ADDR" th:value="${result.EMAIL_ADDR}">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="inputPassword3" class="col-sm-2 col-form-label">메세지</label>
+                                    <div class="col-sm-10">
+                                        <textarea rows="6"  class="form-control" id="MESSAGE" name="MESSAGE"
+                                                  th:value="${result.MESSAGE}"  th:text="${result.MESSAGE}"></textarea>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button type="button" onclick="updateQA()" class="btn btn-primary">수정</button>
+                                </div>
+                            </form><!-- End Horizontal Form -->
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+            </div>
+        </section>
+
+        </main><!-- End #main -->
+
+
+        <!-- ======= Footer ======= -->
+        <footer id="footer" class="footer">
+            <div class="copyright">
+                &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+            </div>
+            <div class="credits">
+                <!-- All the links in the footer should remain intact. -->
+                <!-- You can delete the links only if you purchased the pro version. -->
+                <!-- Licensing information: https://bootstrapmade.com/license/ -->
+                <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+            </div>
+        </footer><!-- End Footer -->
+
+        <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+                class="bi bi-arrow-up-short"></i></a>
+    </ul>
+
+</body>
+
+</html>

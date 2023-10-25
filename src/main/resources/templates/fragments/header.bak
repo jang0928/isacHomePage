@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!-- Thymeleaf 선언 / headerFragment 임을 선언-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:fragment="HeaderFragment">
+<style th:inline="css" type="text/css">
+    header article {
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin:0 auto;
+        padding:0 4rem 0 8.4rem;
+        height:100px;
+    }
+    header button {
+        color:black;
+        font-size:2rem;
+        border:0;
+        background-color:transparent;
+    }
+    header img {
+        width:100%;
+        height:100%;
+        object-fit: cover;
+    }
+    header a {
+    text-decoration: none;
+    color: black;
+    }
+
+</style>
+    <header>
+        <article>
+            <button style="width: 100px;"><a href="/"><img src="/css/images/mainCompany.jpg"></a> </button>
+            <button><a href="/about">상품소개</a></button>
+            <button><a href="/introduce">소개</a></button>
+            <button><a href="/question">문의하기</a></button>
+        </article>
+    </header>
+</html>

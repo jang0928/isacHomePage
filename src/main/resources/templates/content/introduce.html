@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}"
+      layout:fragment="Content">
+
+
+<style th:inline="css" type="text/css">
+    body {
+       background : aliceblue;
+       height : 3000px;
+       font-family: 'nanumsquare';
+       display : flex;
+       flex-direction: column;
+    }
+   .slice {
+       margin-top: 1000px;
+       color : white;
+       text-align : center;
+       transition : all 2s;
+       flex : 1;
+   }
+   .slice_1 {
+       color : black;
+       text-align : center;
+   }
+   .my_bg {
+        background-image: url('/css/images/dog.jpeg');
+        background-size : cover;
+        height : 10%;
+        opacity : 0.5;
+    }
+</style>
+
+<head>
+    <title>테스트 페이지 </title>
+    <!-- inline CSS 영역-->
+
+    <!-- inline JS 영역-->
+
+</head>
+
+<body>
+        <div class = "my_bg slice_1"><h1>안녕하세요1 소개글</h1></div>
+        <div class = "slice"><h1>안녕하세요2 소개글</h1></div>
+        <div class = 'slice'><h1>안녕하세요3 소개글</h1></div>
+</body>
+
+<script th:inline="javascript" type="text/javascript">
+    let observer = new IntersectionObserver((e) => {
+    console.log(e)
+        e.forEach((box)=> {
+            if(box.isIntersecting) {
+                box.target.style.opacity = 0.9;
+            } else  {
+                box.target.style.opacity = 0;
+            }
+        })
+    })
+    let div = document.querySelectorAll('.slice')
+    observer.observe(div[0])
+     observer.observe(div[1])
+     observer.observe(div[2])
+</script>
+</html>

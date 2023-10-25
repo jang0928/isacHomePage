@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}"
+      layout:fragment="Content">
+
+
+<style th:inline="css" type="text/css">
+  .paging{margin-top:20px;white-space: nowrap; text-align: center; height: 37px; line-height:37px;}
+  .paging a{display:inline-block; border:1px solid #f7f7f7; height:35px; width:35px;  vertical-align:middle; text-align:center; text-decoration:none; font-size:15px; color:#898989;background:#f7f7f7;}
+  .paging .on{color:#fff; font-weight:bold; background:#333;}
+  .paging .prev,.pagination .next{height:35px; width:35px; border:1px solid #ebebeb;overflow:hidden;position:relative; }
+  .paging .prev.end,.pagination .next.end{height:35px; width:35px; }
+  .paging .prev{background:#ebebeb url("") no-repeat center center; margin-right:11px;}
+  .paging .prev.end{background:#ebebeb url("") no-repeat center center; margin-right:4px; border-right:0;}
+  .paging .next{background:#ebebeb url("") no-repeat center center; margin-left:12px;}
+  .paging .next.end{background:#ebebeb url("") no-repeat center center; margin-left:4px; border-left:0;}
+
+</style>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Tables / Data - NiceAdmin Bootstrap Template</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+
+
+
+    <script th:inline="javascript" type="text/javascript">
+        // $('#comSearch').val();
+        $('document').ready(function () {
+
+            search();
+
+        });
+        const search = (page) => {
+            let data = {
+              _csrf: $("meta[name='_csrf']").attr("content"),
+              COMPANY_NM: $("#comSearch").val(),
+              // pageSize: $("#pageSize").val(),
+              recordSize: $("#pageSize").val()
+            }
+            if(page !='' && page !=null && page != undefined) {
+              data.page = page
+            }
+
+            $.ajax({
+                url: "/admin/searchQaList.ajax",
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    let size = result.result.length;
+                    let tableBody = $('#tableBody');
+                    tableBody.empty();
+
+                    for (let i = 0; i < size; i++) {
+                        let tableTd = '<tr>';
+                        tableTd += '<td><a href="/admin/questionDetail?seq=' + result.result[i].seq + '">' + result.result[i].seq + '</a></td>';
+                        tableTd += '<td>' + result.result[i].company_NM + '</td>';
+                        tableTd += '<td>' + result.result[i].mb_NM + '</td>';
+                        tableTd += '<td>' + result.result[i].subject + '</td>';
+                        tableTd += '<td>' + result.result[i].reg_DT + '</td>';
+                        tableTd += '</tr>';
+
+                        $('#tableBody').append(tableTd);
+                    }
+                    findAllPost(result)
+                },
+                error: function (e) {
+                    console.log(e)
+                }
+            })
+        }
+        /*<![CDATA[*/
+
+        function findAllPost(e) {
+            console.log('aa', e)
+            // 5. 리스트에 출력되는 게시글 번호를 처리하기 위해 사용되는 변수 (리스트에서 번호는 페이지 정보를 이용해서 계산해야 함)
+            const list = e.result;
+          if ( !list.length ) {
+            document.getElementById('tableBody').innerHTML = '<td colspan="6"><div className="no_data_msg">검색된 결과가 없습니다.</div></td>';
+            drawPage();
+          }
+            const pagination = e.params;
+
+            const params = e.questionVO
+
+            let num = pagination.totalRecordCount - ((params.page - 1) * params.recordSize);
+            drawPage(pagination, params);
+
+        }
+
+        // 리스트 HTML draw
+        function drawPage(pagination, params) {
+
+            // 1. 필수 파라미터가 없는 경우, 페이지 번호(페이지네이션) HTML을 제거(초기화)한 후 로직 종료
+            if (!pagination || !params) {
+                document.querySelector('.paging').innerHTML = '';
+                throw new Error('Missing required parameters...');
+            }
+
+            // 2. 렌더링 할 HTML을 저장할 변수
+            let html = '';
+            // 3. 이전 페이지가 있는 경우, 즉 시작 페이지(startPage)가 1이 아닌 경우 첫 페이지 버튼과 이전 페이지 버튼을 HTML에 추가
+            if (pagination.existPrevPage) {
+                html += `
+                        <a href="javascript:void(0);" onclick="movePage(1)" class="prev end"><<</a>
+                        <a href="javascript:void(0);" onclick="movePage(${pagination.startPage - 1})" class="prev"><</a>
+                    `;
+            }
+
+            /*
+             * 4. 시작 페이지(startPage)와 끝 페이지(endPage) 사이의 페이지 번호(i)를 넘버링 하는 로직
+             *    페이지 번호(i)와 현재 페이지 번호(params.page)가 동일한 경우, 페이지 번호(i)를 활성화(on) 처리
+             */
+            for (let i = pagination.startPage; i <= pagination.endPage; i++) {
+                html += (i !== params.page)
+                    ? `<a href="javascript:void(0);" onclick="movePage(${i});">${i}</>`
+                    : `<a class="on">${i}</a>`
+            }
+
+            // 5. 현재 위치한 페이지 뒤에 데이터가 더 있는 경우, 다음 페이지 버튼과 끝 페이지 버튼을 HTML에 추가
+            if (pagination.existNextPage) {
+                html += `
+                        <a href="javascript:void(0);" onclick="movePage(${pagination.endPage + 1});" class="page_bt next">></a>
+                        <a href="javascript:void(0);" onclick="movePage(${pagination.totalPageCount});" class="page_bt end">>></a>
+                    `;
+            }
+
+            // 6. class가 "paging"인 요소를 찾아 HTML을 렌더링
+            document.querySelector('.paging').innerHTML = html;
+        }
+
+        // 페이지 이동
+        function movePage(page) {
+
+            // 1. drawPage( )의 각 버튼에 선언된 onclick 이벤트를 통해 전달받는 page(페이지 번호)를 기준으로 객체 생성
+
+          if(page) {
+            page = page
+          } else {
+            page =1
+          }
+          console.log('page' ,page)
+            /*
+           * 2. location.pathname : 리스트 페이지의 URI("/post/list.do")를 의미
+           *    new URLSearchParams(queryParams).toString() : queryParams의 모든 프로퍼티(key-value)를 쿼리 스트링으로 변환
+           *    URI + 쿼리 스트링에 해당하는 주소로 이동
+           *    (해당 함수가 리턴해주는 값을 브라우저 콘솔(console)에 찍어보시면 쉽게 이해하실 수 있습니다.)
+           */
+          search(page)
+        }
+
+        /*]]>*/
+    </script>
+
+
+    <!-- Template Main CSS File -->
+
+    <!-- =======================================================
+    * Template Name: NiceAdmin
+    * Updated: Sep 18 2023 with Bootstrap v5.3.2
+    * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav" style="padding: inherit;">
+
+
+        <main id="main" class="main">
+            <div class="breadcrumbs d-flex align-items-center"
+                 >
+                <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
+
+                    <h2>접수 내역</h2>
+
+                    <ol>
+                        <li><a href="index.bak">Home</a></li>
+                        <li>접수 목록</li>
+                    </ol>
+
+                </div>
+            </div><!-- End Breadcrumbs -->
+
+            <section class="section">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Datatables</h5>
+                                <p>Add lightweight datatables to your project with using the <a
+                                        href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple
+                                    DataTables</a> library. Just add <code>.datatable</code> class name to any table you
+                                    wish to conver to a datatable</p>
+                                <div class="datatable-top">
+                                    <div class="datatable-dropdown">
+                                        <label>
+                                            <select class="datatable-selector" id="pageSize">
+                                              <option value="1">1</option>
+                                                <option value="5">5</option>
+                                                <option value="10" selected="">10</option>
+                                                <option value="15">15</option>
+                                                <option value="20">20</option>
+                                                <option value="25">25</option>
+                                            </select> entries per page
+                                        </label>
+                                    </div>
+                                    <div class="datatable-search">
+                                        <input class="datatable-input" id="comSearch" placeholder="회사명" value=""
+                                               type="text" title="Search within table">
+                                        <button onclick='search()'> 조회</button>
+                                    </div>
+                                </div>
+                                <!-- Table with stripped rows -->
+                                <table class="table datatable">
+                                    <thead>
+
+
+                                    <tr>
+                                        <th scope="col">#
+
+                                        <th scope="col">회사명</th>
+                                        <th scope="col">제목</th>
+                                        <th scope="col">작성자</th>
+                                        <th scope="col">작성일</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tableBody">
+                                    <!--                <tr th:each="result : ${result}">-->
+                                    <!--                  <td th:text="${result.SEQ}"></td>-->
+                                    <!--                  <td th:text="${result.COMPANY_NM}"></td>-->
+                                    <!--                  <td th:text="${result.SUBJECT}"></td>-->
+                                    <!--                  <td th:text="${result.MB_NM}"></td>-->
+                                    <!--                  <td th:text="${result.REG_DT}"></td>-->
+                                    <!--                </tr>-->
+                                    </tbody>
+                                </table>
+                                <!-- End Table with stripped rows -->
+                                <div class="paging">
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </main><!-- End #main -->
+
+        <!-- ======= Footer ======= -->
+        <footer id="footer" class="footer">
+            <div class="copyright">
+                &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+            </div>
+            <div class="credits">
+                <!-- All the links in the footer should remain intact. -->
+                <!-- You can delete the links only if you purchased the pro version. -->
+                <!-- Licensing information: https://bootstrapmade.com/license/ -->
+                <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+            </div>
+        </footer><!-- End Footer -->
+
+        <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+                class="bi bi-arrow-up-short"></i></a>
+
+    </ul>
+</body>
+
+</html>

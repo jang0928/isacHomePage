@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.homeDemo.demo.question.QuestionRepository">
+    <select id="getQaList" resultType="QuestionVO" parameterType="QuestionVO">
+        SELECT * FROM tb_question
+        WHERE 1=1
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(COMPANY_NM)">
+            AND  COMPANY_NM LIKE CONCAT('%', #{COMPANY_NM}, '%')
+        </if>
+        LIMIT #{pagination.limitStart}, #{recordSize}
+    </select>
+
+    <select id="qaCount" resultType="Integer" parameterType="QuestionVO">
+        SELECT count(*) FROM tb_question
+        WHERE 1=1
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(COMPANY_NM)">
+            AND  COMPANY_NM LIKE CONCAT('%', #{COMPANY_NM}, '%')
+        </if>
+    </select>
+
+    <select id="qaListBySeq" resultType="QuestionVO" parameterType="Integer">
+        SELECT * FROM tb_question
+        WHERE 1=1
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEquals(SEQ,0)">
+            AND  SEQ =#{SEQ}
+        </if>
+    </select>
+
+
+
+    <insert id="insertQA" parameterType="QuestionVO">
+        INSERT INTO tb_question (
+            COMPANY_NM
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(SUBJECT)">
+            ,SUBJECT
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(MB_NM)">
+            ,MB_NM
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(CELPNO)">
+            ,CELPNO
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(EMAIL_ADDR)">
+            ,EMAIL_ADDR
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(REG_ID)">
+            ,REG_ID
+        </if>
+        ,REG_DT
+        ,LST_MOD_DT
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(LST_MOD_ID)">
+            ,LST_MOD_ID
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(MESSAGE)">
+            ,MESSAGE
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(AUTH)">
+            ,AUTH
+        </if>
+        ) VALUES (
+            #{COMPANY_NM}
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(SUBJECT)">
+            ,#{SUBJECT}
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(MB_NM)">
+            ,#{MB_NM}
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(CELPNO)">
+            ,#{CELPNO}
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(EMAIL_ADDR)">
+            ,#{EMAIL_ADDR}
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(REG_ID)">
+            ,#{REG_ID}
+        </if>
+        ,DATE_FORMAT(now(), '%Y%m%d')
+        ,DATE_FORMAT(now(), '%Y%m%d')
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(LST_MOD_ID)">
+            ,#{LST_MOD_ID}
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(MESSAGE)">
+            ,#{MESSAGE}
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(AUTH)">
+            ,#{AUTH}
+        </if>
+        )
+    </insert>
+
+
+</mapper>
