@@ -2,6 +2,7 @@ package com.homeDemo.demo.HomeController;
 
 import com.homeDemo.demo.user.UserServiceImpl;
 import com.homeDemo.demo.user.UserVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping(value = "/home")
 @SessionAttributes("user")
+@Slf4j
 public class HomeController {
     @Autowired
     UserServiceImpl userService;

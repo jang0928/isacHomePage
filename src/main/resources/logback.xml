@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration debug="true">
-
+<configuration>
+    <!-- 로그 패턴에 색상 적용 %clr(pattern){color} -->
     <!-- Appenders -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <charset>UTF-8</charset>
-            <Pattern>%d %5p [%c] %m%n</Pattern>
+            <Pattern>>[%d{yyyy-MM-dd HH:mm:ss}][%-5level][%logger{36}] - %msg%n</Pattern>
         </encoder>
     </appender>
 
@@ -17,8 +17,8 @@
     </appender>
 
     <!-- Logger -->
-    <logger name="com.study" level="DEBUG" appender-ref="console" />
-    <logger name="jdbc.sqlonly" level="INFO" appender-ref="console-infolog" />
+    <logger name="com.homeDemo.demo" level="debug" appender-ref="console" />
+    <logger name="jdbc.sqlonly" level="debug" appender-ref="console-infolog" />
 <!--    <logger name="jdbc.resultsettable" level="INFO" appender-ref="console-infolog" />-->
 
     <!-- Root Logger -->
