@@ -17,12 +17,10 @@ public class LoggerAspect {
         String type =
                 StringUtils.contains(name, "Controller") ? "Controller ===> " :
                         StringUtils.contains(name, "Service") ? "Service ===> " :
-                                StringUtils.contains(name, "Mapper") ? "Mapper ===> " :
+                                StringUtils.contains(name, "Repository") ? "Mapper ===> " :
                                         "";
 
         log.debug(type + name + "." + joinPoint.getSignature().getName() + "()");
-        log.debug("helooo----->");
-        log.debug(String.valueOf(joinPoint.getThis()));
         return joinPoint.proceed();
     }
 }

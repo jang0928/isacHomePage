@@ -2,6 +2,9 @@ package com.homeDemo.demo.HomeController;
 
 import com.homeDemo.demo.user.UserServiceImpl;
 import com.homeDemo.demo.user.UserVO;
+import com.homeDemo.demo.util.EmailService;
+import jakarta.annotation.Resource;
+import jakarta.annotation.Resources;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -18,12 +21,14 @@ import org.springframework.web.bind.annotation.*;
 public class HomeController {
     @Autowired
     UserServiceImpl userService;
-
+    @Autowired
+    EmailService emailService;
     @GetMapping()
     public String mainHome(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String id =  String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         UserVO userVO = userService.getUserById(id);
+
         model.addAttribute("user",userVO);
         return "content/home/index";
     }

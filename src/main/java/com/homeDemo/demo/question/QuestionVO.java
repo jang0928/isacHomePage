@@ -2,6 +2,10 @@ package com.homeDemo.demo.question;
 
 import com.homeDemo.demo.util.PaigingVO;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class QuestionVO extends PaigingVO {
@@ -17,6 +21,7 @@ public class QuestionVO extends PaigingVO {
     private String LST_MOD_ID;
     private String MESSAGE;
     private String AUTH;
+    private List<MultipartFile> files = new ArrayList<>();
 //    private int page;                 // 현재 페이지 번호
 //    private int recordSize;           // 페이지당 출력할 데이터 개수
 //    private int pageSize;             // 화면 하단에 출력할 페이지 사이즈

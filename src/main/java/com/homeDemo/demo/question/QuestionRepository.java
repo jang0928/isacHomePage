@@ -11,7 +11,7 @@ public interface QuestionRepository {
 
     QuestionVO qaListBySeq(int seq);
 
-    int insertQA(QuestionVO param);
+    void insertQA(QuestionVO param);
 
     int qaCount(QuestionVO param);
 

@@ -26,7 +26,8 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public int insertQA(QuestionVO param) {
-        return questionRepository.insertQA(param);
+        questionRepository.insertQA(param);
+        return param.getSEQ();
     }
 
     @Override

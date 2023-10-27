@@ -52,7 +52,7 @@
        WHERE SEQ=#{SEQ}
     </delete>
 
-    <insert id="insertQA" parameterType="QuestionVO">
+    <insert id="insertQA" parameterType="QuestionVO" useGeneratedKeys="true" keyProperty="SEQ">
         INSERT INTO tb_question (
             COMPANY_NM
         <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(SUBJECT)">

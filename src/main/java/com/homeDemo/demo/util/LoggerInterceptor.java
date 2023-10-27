@@ -11,7 +11,7 @@ public class LoggerInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.debug("==================================");
+        log.debug("====InterCeptor==================");
         log.debug("===============START==============");
         log.debug("Uri ==>" + request.getRequestURI());
 
