@@ -30,6 +30,32 @@
     .gocenter {
         justify-content:center ;
     }
+
+    .file_input label {
+        display: inline-block;
+        padding: .5em .75em;
+        color: #a7acb1;
+        float: right;
+        font-size: inherit;
+        line-height: normal;
+        vertical-align: middle;
+        background-color: rgba(21,47,102,0.65);
+        cursor: pointer;
+        border: 1px solid #ebebeb;
+        border-bottom-color: #e2e2e2;
+        border-radius: .25em;
+    }
+
+    .file_input input[type="file"] {  /* 파일 필드 숨기기 */
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip:rect(0,0,0,0);
+        border: 0;
+    }
 </style>
 <head>
     <meta charset="utf-8">
@@ -98,7 +124,6 @@
             // 1. API 호출
             const questionSEQ = $('#SEQ').val();
             const response = getJson(`/question/files/${questionSEQ}`)
-            console.log('response ---->', response.length)
             // 2. 로직 종료
             if (response.length < 1) {
                 console.log('오나요 ??')
@@ -108,22 +133,24 @@
 
 
             let fileHtml = '<div class="file_down"><div class="cont">';
-            // response.forEach(row => {
-            //     fileHtml += `<a href="javascript:alert('준비 중입니다.');"><span class="icons"><i class="fas fa-folder-open"></i></span>${row.file_NAME}</a>`;
-            // })
-            // fileHtml += '</div></div>';
 
+            // response.forEach(row => {
+            //     fileHtml += `<a href="/question/${questionSEQ}/files/${row.seq}/download"><span class="icons"><i class="fas fa-folder-open"></i></span>${row.file_NAME}</a>`;
+            //     fileHtml += '<br/><br/>'
+            // })
             fileHtml += ` <div>
                 <div class="file_input">
-                    <input type="text" readonly/>
-                    <label>
-                        <input type="file" name="files" onchange="selectFile(this);"/>
+                    <input type="text" readonly style="color: #00b3ff"/>
+                    <label for="file">
+                    업로드
+                        <input type="file" name="files" id ="file" onchange="selectFile(this);"/>
                     </label>
                 </div>
 
                 <button type="button" onclick="removeFile(this);" class="btns del_btn"><span>삭제</span></button>
                 <button type="button" onclick="addFile();" class="btns fn_add_btn"><span>파일 추가</span></button>
             </div>`
+
             // 4. 파일 HTML 렌더링
             document.getElementById('file_list').innerHTML = fileHtml;
 
@@ -137,9 +164,16 @@
             filenameInputs.forEach((input, i) => {
                 const fileInput = input.nextElementSibling.firstElementChild;
                 const fileRemoveBtn = input.parentElement.nextElementSibling;
+
                 fileInput.setAttribute('onchange', `selectFile(this, ${response[i].seq})`);
                 fileRemoveBtn.setAttribute('onclick', `removeFile(this, ${response[i].seq})`);
                 input.value = response[i].file_NAME;
+                input.type="button"
+                input.style.backgroundColor = 'white'
+                input.style.color = '#00b3ff';
+                input.style.border ='none'
+
+                input.setAttribute('onclick' ,`window.location.href='/question/${questionSEQ}/files/${response[i].seq}/download'`)
             })
 
         }
@@ -147,15 +181,15 @@
             const fileDiv = document.createElement('div');
             fileDiv.innerHTML =`
                     <div class="file_input">
-                        <input type="text" readonly />
-                        <label>
-                            <input type="file" name="files" onchange="selectFile(this);" />
+                        <input type="text" readonly  />
+                        <label for ="file">
+                        업로드
+                            <input type="file" name="files" id ="file" onchange="selectFile(this);" />
                         </label>
                     </div>
                     <button type="button" onclick="removeFile(this);" class="btns del_btn"><span>삭제</span></button>
                      <button type="button" onclick="addFile();" class="btns fn_add_btn"><span>파일 추가</span></button>
                 `;
-            console.log('==========', document.querySelector('.file_list'))
             document.querySelector('.file_list').appendChild(fileDiv);
         }
 

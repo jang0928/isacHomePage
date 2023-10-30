@@ -16,6 +16,18 @@
             SEQ
     </select>
 
+    <select id="fileListByAllDelete" parameterType="Integer" resultType="FileVO">
+        SELECT
+            *
+        FROM
+            tb_file
+        WHERE
+            DELETE_YN='N'
+          AND QUESTION_SEQ=#{SEQ}
+        ORDER BY
+            SEQ
+    </select>
+
     <select id="fileListByPk" parameterType="list" resultType="FileVO">
         SELECT
             *
@@ -31,6 +43,17 @@
             SEQ
     </select>
 
+    <select id="fileOneBySeq" parameterType="Integer" resultType="FileVO">
+        SELECT
+            *
+        FROM
+            tb_file
+        WHERE
+            DELETE_YN='N'
+          AND
+            SEQ=#{SEQ}
+    </select>
+
     <delete id="deleteFileByPk" parameterType="Integer">
         UPDATE tb_file
         SET
@@ -41,6 +64,15 @@
         <foreach item="SEQ" collection="list" open="(" separator="," close=")">
             #{SEQ}
         </foreach>
+    </delete>
+
+    <delete id="deleteFileAllByFk" parameterType="Integer">
+        UPDATE tb_file
+        SET
+            DELETE_YN = 'Y'
+            ,DELETED_DT = NOW()
+        WHERE
+            QUESTION_SEQ =#{SEQ}
     </delete>
 
     <insert id="saveFileAll" parameterType="list">

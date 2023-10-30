@@ -1,6 +1,8 @@
 package com.homeDemo.demo.util;
 
 import com.homeDemo.demo.file.FileVO;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -8,10 +10,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -108,6 +115,8 @@ public class FileUtil {
         return dir.getPath();
     }
 
+
+
     /**
      * 파일 삭제 (from Disk)
      * @param files - 삭제할 파일 정보 List
@@ -118,8 +127,9 @@ public class FileUtil {
         }
         for (FileVO file : files) {
 //            String uploadedDate = file.getREG_DT().toLocalDate().format(DateTimeFormatter.ofPattern("yyMMdd"));
-           String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd")).toString();
-            deleteFile(date, file.getFILE_ID());
+            String inputDate  = file.getREG_DT();
+            String outputDate = trnasDate(inputDate);
+            deleteFile(outputDate, file.getFILE_ID());
 
         }
     }
@@ -139,4 +149,40 @@ public class FileUtil {
             file.delete();
         }
     }
+
+    /**
+     * 다운로드할 첨부파일(리소스) 조회 (as Resource)
+     * @param file - 첨부파일 상세정보
+     * @return 첨부파일(리소스)
+     */
+    public Resource readFileAsResource(final FileVO file) {
+        String inputDate = file.getREG_DT();
+        String uploadedDate = trnasDate(inputDate);
+
+        String filename = file.getFILE_ID();
+        Path filePath = Paths.get(uploadPath, uploadedDate, filename);
+        try {
+            Resource resource = new UrlResource(filePath.toUri());
+            if (resource.exists() == false || resource.isFile() == false) {
+                throw new RuntimeException("file not found : " + filePath.toString());
+            }
+            return resource;
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("file not found : " + filePath.toString());
+        }
+    }
+
+    private String trnasDate (String inputDate) {
+        SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyMMdd");
+        String outputDate ="";
+        try {
+            Date date = inputDateFormat.parse(inputDate);
+            outputDate = outputDateFormat.format(date);
+        } catch (Exception e ){
+            System.out.println("날짜 변환 오류 !! ");
+        }
+        return outputDate;
+    }
+
 }

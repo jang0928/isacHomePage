@@ -76,6 +76,11 @@ public class AdminController {
     public ModelAndView deleteQA(Model model, @RequestParam("SEQ") int param) {
         ModelAndView mv = new ModelAndView("jsonView");
         int result =  questionService.qaDeleteContent(param);
+        // 게시글 seq 로 파일 qusetion_seq 에 넣어서 조회
+        List<FileVO> deleteFiles = fileService.fileListByAllDelete(param);
+
+        fileUtil.deleteFiles(deleteFiles);
+        fileService.deleteFileAllByFk(param);
         mv.setViewName("redirect:/admin/qa");
         return mv;
     }

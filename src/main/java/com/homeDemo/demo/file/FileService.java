@@ -10,4 +10,9 @@ public interface FileService {
 
     public void deleteFileByPk(List<Integer> list);
 
+    List<FileVO> fileListByAllDelete(int param);
+
+    void deleteFileAllByFk(int param);
+
+    public FileVO fileOneBySeq(int seq);
 }

@@ -11,4 +11,10 @@ public interface FileRepository {
     List<FileVO> fileListByFK(int questionSeq);
     List<FileVO> fileListByPk(List<Integer> list);
     void deleteFileByPk(List<Integer> list);
+
+    List<FileVO> fileListByAllDelete(int param);
+
+    void deleteFileAllByFk(int param);
+
+    FileVO fileOneBySeq(int seq);
 }

@@ -36,6 +36,7 @@ public class FileServiceImpl implements FileService {
         return fileRepository.fileListByPk(list);
     }
 
+
     @Override
     public void deleteFileByPk(List<Integer> list) {
         if (CollectionUtils.isEmpty(list)) {
@@ -43,4 +44,21 @@ public class FileServiceImpl implements FileService {
         }
         fileRepository.deleteFileByPk(list);
     }
+
+    @Override
+    public List<FileVO> fileListByAllDelete(int param) {
+        return fileRepository.fileListByAllDelete(param);
+    }
+
+    @Override
+    public void deleteFileAllByFk(int param) {
+
+        fileRepository.deleteFileAllByFk(param);
+    }
+
+    @Override
+    public FileVO fileOneBySeq(int seq) {
+        return fileRepository.fileOneBySeq(seq);
+    }
+
 }
