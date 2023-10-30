@@ -4,6 +4,45 @@
 
 
 <mapper namespace="com.homeDemo.demo.file.FileRepository">
+    <select id="fileListByFK" parameterType="Integer" resultType="FileVO">
+        SELECT
+            *
+        FROM
+            tb_file
+        WHERE
+            DELETE_YN='N'
+            AND QUESTION_SEQ=#{QUESTION_SEQ}
+        ORDER BY
+            SEQ
+    </select>
+
+    <select id="fileListByPk" parameterType="list" resultType="FileVO">
+        SELECT
+            *
+        FROM
+            tb_file
+        WHERE
+            DELETE_YN='N'
+        AND SEQ IN
+        <foreach item="SEQ" collection="list" open="(" separator="," close=")">
+            #{SEQ}
+        </foreach>
+        ORDER BY
+            SEQ
+    </select>
+
+    <delete id="deleteFileByPk" parameterType="Integer">
+        UPDATE tb_file
+        SET
+        DELETE_YN = 'Y'
+        , DELETED_DT = NOW()
+        WHERE
+        SEQ IN
+        <foreach item="SEQ" collection="list" open="(" separator="," close=")">
+            #{SEQ}
+        </foreach>
+    </delete>
+
     <insert id="saveFileAll" parameterType="list">
         INSERT
             INTO tb_file
@@ -29,6 +68,7 @@
             )
         </foreach>
     </insert>
+
 
 
 </mapper>

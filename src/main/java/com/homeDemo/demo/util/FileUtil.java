@@ -2,6 +2,7 @@ package com.homeDemo.demo.util;
 
 import com.homeDemo.demo.file.FileVO;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -105,5 +106,37 @@ public class FileUtil {
             dir.mkdirs();
         }
         return dir.getPath();
+    }
+
+    /**
+     * 파일 삭제 (from Disk)
+     * @param files - 삭제할 파일 정보 List
+     */
+    public void deleteFiles(final List<FileVO> files) {
+        if (CollectionUtils.isEmpty(files)) {
+            return;
+        }
+        for (FileVO file : files) {
+//            String uploadedDate = file.getREG_DT().toLocalDate().format(DateTimeFormatter.ofPattern("yyMMdd"));
+           String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd")).toString();
+            deleteFile(date, file.getFILE_ID());
+
+        }
+    }
+
+    /**
+     * 파일 삭제 (from Disk)
+     * @param addPath - 추가 경로
+     * @param filename - 파일명
+     */
+    private void deleteFile(final String addPath, final String filename) {
+        String filePath = Paths.get(uploadPath, addPath, filename).toString();
+        deleteFile(filePath);
+    }
+    private void deleteFile(final String filePath) {
+        File file = new File(filePath);
+        if (file.exists()) {
+            file.delete();
+        }
     }
 }

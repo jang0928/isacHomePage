@@ -1,9 +1,12 @@
 package com.homeDemo.demo.admin;
 
+import com.homeDemo.demo.file.FileServiceImpl;
+import com.homeDemo.demo.file.FileVO;
 import com.homeDemo.demo.question.Pagenation;
 import com.homeDemo.demo.question.QuestionServiceImpl;
 import com.homeDemo.demo.question.QuestionVO;
 import com.homeDemo.demo.user.UserVO;
+import com.homeDemo.demo.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +20,11 @@ import java.util.List;
 @SessionAttributes("user")
 public class AdminController {
     @Autowired
-    QuestionServiceImpl questionService;
+    private QuestionServiceImpl questionService;
+    @Autowired
+    private FileUtil fileUtil;
+    @Autowired
+    private FileServiceImpl fileService;
 
 
     @GetMapping("/qa")
@@ -54,6 +61,13 @@ public class AdminController {
     public ModelAndView updateQA(Model model, QuestionVO param) {
         ModelAndView mv = new ModelAndView("jsonView");
         int result =  questionService.qaUpdateContent(param);
+        List<FileVO> uploadFiles = fileUtil.uploadFiles(param.getFiles());
+        fileService.saveFiles(param.getSEQ(), uploadFiles);
+        List<FileVO> deleteFiles = fileService.fileListByPk(param.getRemoveFileIds());
+
+        fileUtil.deleteFiles(deleteFiles);
+
+        fileService.deleteFileByPk(param.getRemoveFileIds());
         mv.setViewName("redirect:/admin/qa");
         return mv;
     }

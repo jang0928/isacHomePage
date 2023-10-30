@@ -22,6 +22,7 @@ public class QuestionVO extends PaigingVO {
     private String MESSAGE;
     private String AUTH;
     private List<MultipartFile> files = new ArrayList<>();
+    private List<Integer> removeFileIds = new ArrayList<>();     // 삭제할 첨부파일 id List
 //    private int page;                 // 현재 페이지 번호
 //    private int recordSize;           // 페이지당 출력할 데이터 개수
 //    private int pageSize;             // 화면 하단에 출력할 페이지 사이즈
