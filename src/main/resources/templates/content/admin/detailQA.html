@@ -39,23 +39,16 @@
         font-size: inherit;
         line-height: normal;
         vertical-align: middle;
-        background-color: rgba(21,47,102,0.65);
         cursor: pointer;
         border: 1px solid #ebebeb;
         border-bottom-color: #e2e2e2;
         border-radius: .25em;
     }
+    /*.file_input input[type="file"] {  !* 파일 필드 숨기기 *!*/
+    /*    padding: 0;*/
+    /*    border: 0;*/
+    /*}*/
 
-    .file_input input[type="file"] {  /* 파일 필드 숨기기 */
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip:rect(0,0,0,0);
-        border: 0;
-    }
 </style>
 <head>
     <meta charset="utf-8">
@@ -102,7 +95,6 @@
                 $("#form").attr("action","/admin/updateQA");
                 const form = document.getElementById('form');
                 form.removeFileIds.value = removeFileId.getAll().join();
-                console.log("ddddddddddddddddddddd", form.removeFileIds.value)
                 $("#form").submit();
 
                 alert('수정 완료')
@@ -126,8 +118,6 @@
             const response = getJson(`/question/files/${questionSEQ}`)
             // 2. 로직 종료
             if (response.length < 1) {
-                console.log('오나요 ??')
-
                 return false;
             }
 
@@ -139,10 +129,10 @@
             //     fileHtml += '<br/><br/>'
             // })
             fileHtml += ` <div>
+
                 <div class="file_input">
-                    <input type="text" readonly style="color: #00b3ff"/>
+                    <input type="text" readonly style="color: #00b3ff" id="firstText"/>
                     <label for="file">
-                    업로드
                         <input type="file" name="files" id ="file" onchange="selectFile(this);"/>
                     </label>
                 </div>
@@ -167,8 +157,8 @@
 
                 fileInput.setAttribute('onchange', `selectFile(this, ${response[i].seq})`);
                 fileRemoveBtn.setAttribute('onclick', `removeFile(this, ${response[i].seq})`);
-                input.value = response[i].file_NAME;
                 input.type="button"
+                input.value = response[i].file_NAME;
                 input.style.backgroundColor = 'white'
                 input.style.color = '#00b3ff';
                 input.style.border ='none'
@@ -183,7 +173,6 @@
                     <div class="file_input">
                         <input type="text" readonly  />
                         <label for ="file">
-                        업로드
                             <input type="file" name="files" id ="file" onchange="selectFile(this);" />
                         </label>
                     </div>
@@ -222,19 +211,23 @@
             }
         }
         function removeFile(element, id) {
-
             // 1. 삭제할 파일 id 추가
             if (id) {
                 removeFileId.add(id);
             }
-
             // 2. 파일 영역 초기화 & 삭제
+
             const fileAddBtn = element.nextElementSibling;
             if (fileAddBtn) {
                 const inputs = element.previousElementSibling.querySelectorAll('input');
                 inputs.forEach(input => input.value = '')
+                if (!$('#firstText').val()) {
+                    return false;
+                }
+                element.parentElement.remove();
                 return false;
             }
+            console.log( '============',element.parentElement)
             element.parentElement.remove();
         }
     </script>
