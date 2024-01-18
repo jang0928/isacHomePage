@@ -75,6 +75,22 @@
         outline: none; /* 포커스 효과 제거 */
         font-size: 1.2em;
     }
+    .button-1 {
+            padding: 6px 14px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            border-radius: 6px;
+            border: none;
+            background: #5dabff;
+            box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1), inset 0px 0.5px 0.5px rgba(255, 255, 255, 0.5), 0px 0px 0px 0.5px rgba(0, 0, 0, 0.12);
+            color: white;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+    }
+    .button-1:hover {
+        background-color: #2980b9; /* 호버 시 배경색 변경 */
+    }
+
 </style>
 <head>
     <meta charset="utf-8">
@@ -100,6 +116,11 @@
             search();
         });
 
+        function refreshPage() {
+            location.reload(true); // true를 전달하여 캐시를 무시하고 새로고침
+        }
+        // 1분마다 refreshPage 함수 호출
+        setInterval(refreshPage, 600000); // 1분은 60,000 밀리초입니다.
         function insertSale(button) {
             let name = button.parentNode.parentNode.querySelector('#name').value;
             let price = button.parentNode.parentNode.querySelector('#price').value;
@@ -234,9 +255,9 @@
                             $('#thday').show();
                         }
                         if (result.result[i].sale_SEQ === 0) {
-                            tableTd += '<td> <button onclick="insertSale(this)" id = insertButton> 등록</button></td>';
+                            tableTd += '<td> <button onclick="insertSale(this)" id = insertButton class="button-1"> 등록</button></td>';
                         } else {
-                            tableTd += '<td> <button  onclick="updateSale(this)"> 수정</button></td>';
+                            tableTd += '<td> <button  onclick="updateSale(this)" class="button-1"> 수정</button></td>';
                         }
                         tableTd += '</tr>';
 
@@ -393,7 +414,7 @@
                                     <ab style="padding-left: 3em;">
                                         <input class="datatable-input" id="comSearch" placeholder="이름" value=""
                                                type="text" title="Search within table" onkeyup="enterkey()" style="border-bottom: 1px solid;">
-                                        <button onclick='search()'> 조회</button>
+                                        <button onclick='search()' class="button-1"> 조회</button>
                                     </ab>
                                 </div>
                             </div>

@@ -30,7 +30,7 @@ public class HomeController {
         UserVO userVO = userService.getUserById(id);
 
         model.addAttribute("user",userVO);
-        return "content/home/index";
+        return "redirect:/admin/qa";
     }
     @GetMapping("/login")
     public String loginPage() { // 로그인되지 않은 상태이면 로그인 페이지를, 로그인된 상태이면 home 페이지를 보여줌

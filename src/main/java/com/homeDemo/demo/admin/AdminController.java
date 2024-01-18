@@ -5,6 +5,8 @@ import com.homeDemo.demo.file.FileVO;
 import com.homeDemo.demo.question.Pagenation;
 import com.homeDemo.demo.question.QuestionServiceImpl;
 import com.homeDemo.demo.question.QuestionVO;
+import com.homeDemo.demo.sales.SalesHistoryVO;
+import com.homeDemo.demo.sales.SalesService;
 import com.homeDemo.demo.user.UserVO;
 import com.homeDemo.demo.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,10 @@ import java.util.List;
 @SessionAttributes("user")
 public class AdminController {
     @Autowired
+
     private QuestionServiceImpl questionService;
+    @Autowired
+    private SalesService salesService;
     @Autowired
     private FileUtil fileUtil;
     @Autowired
@@ -29,8 +34,9 @@ public class AdminController {
 
     @GetMapping("/qa")
     public String goAdminQA(Model model, QuestionVO param , @ModelAttribute("user") UserVO user) {
-
-        return "content/admin/qaTable";
+        model.addAttribute("user",user);
+//        return "content/admin/qaTable";
+        return "content/admin/salesTable";
     }
 
 
@@ -47,13 +53,57 @@ public class AdminController {
 
     }
 
+    @PostMapping("/searchSalesList.ajax")
+    @ResponseBody
+    public  ModelAndView searchSalesList(Model model , SalesHistoryVO param) {
+        ModelAndView mv = new ModelAndView("jsonView");
+        int count  = salesService.saleCount(param);
+        List<SalesHistoryVO> saleList= salesService.getSaleList(param ,count);
+        Pagenation pagination = new Pagenation(count, param);
+        mv.addObject("result",saleList );
+        mv.addObject("params", pagination);
+        return mv;
+
+    }
+
+    @ResponseBody
     @GetMapping("/questionDetail")
     public ModelAndView questionDetail(Model model, @RequestParam("seq") int seq) {
         ModelAndView mv = new ModelAndView("jsonView");
         QuestionVO param = new QuestionVO();
         QuestionVO qaListBySeq = questionService.qaListBySeq(seq);
         mv.addObject("result", qaListBySeq);
-        mv.setViewName("/content/admin/detailQA");
+        mv.setViewName("content/admin/detailQA");
+        return mv;
+    }
+
+    @ResponseBody
+    @GetMapping("/salesDetail")
+    public ModelAndView salesDetail(Model model, @RequestParam("seq") int seq) {
+        ModelAndView mv = new ModelAndView("jsonView");
+        SalesHistoryVO saleListBySeq = salesService.saleListBySeq(seq);
+        mv.addObject("result", saleListBySeq);
+        mv.setViewName("content/admin/detailQA");
+        return mv;
+    }
+
+    @PostMapping ("/insertSale.ajax")
+    @ResponseBody
+    public ModelAndView insertSale (SalesHistoryVO param) {
+        ModelAndView mv = new ModelAndView("jsonView");
+
+        int rs = salesService.insertSale(param);
+        mv.addObject("result" , rs);
+        return mv;
+    }
+
+    @PostMapping ("/updateSale.ajax")
+    @ResponseBody
+    public ModelAndView updateSale (SalesHistoryVO param) {
+        ModelAndView mv = new ModelAndView("jsonView");
+
+        int rs = salesService.saleUpdateContent(param);
+        mv.addObject("result" , rs);
         return mv;
     }
 
