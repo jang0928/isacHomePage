@@ -73,7 +73,7 @@
         border: none;
         /*border-bottom: 1px solid #000; !* 원하는 색상으로 변경 가능 *!*/
         outline: none; /* 포커스 효과 제거 */
-        font-size: 1.5em;
+        font-size: 1.2em;
     }
 </style>
 <head>
@@ -218,7 +218,7 @@
                         }
                         let tableTd = '<tr>';
                         // tableTd += '<td><a href=\"/admin/questionDetail?seq=' + result.result[i].sale_SEQ + '">' + result.result[i].sale_SEQ + '\</a></td>';
-                        tableTd += '<td style="font-size: 1.5em">' + result.result[i].name + '</td>';
+                        tableTd += '<td style="font-size: 1.3em">' + result.result[i].name + '</td>';
                         // tableTd += '<td> <input type="text" value="' + result.result[i].name + '"> </td>';
                         tableTd += '<td> <input type="text" value="' + price + '" id = "price"></td>';
                         // tableTd += '<td>' + profit+ '</td>';
@@ -390,11 +390,11 @@
                                     <label>
                                         <input type="date" name="day" id="day">
                                     </label>
-                                </div>
-                                <div class="datatable-search">
-                                    <input class="datatable-input" id="comSearch" placeholder="이름" value=""
-                                           type="text" title="Search within table" onkeyup="enterkey()" style="border-bottom: 1px solid;">
-                                    <button onclick='search()'> 조회</button>
+                                    <ab style="padding-left: 3em;">
+                                        <input class="datatable-input" id="comSearch" placeholder="이름" value=""
+                                               type="text" title="Search within table" onkeyup="enterkey()" style="border-bottom: 1px solid;">
+                                        <button onclick='search()'> 조회</button>
+                                    </ab>
                                 </div>
                             </div>
                             <!-- Table with stripped rows -->
@@ -404,10 +404,10 @@
 
                                 <tr>
 
-                                    <th scope="col">이름</th>
-                                    <th scope="col">매출</th>
-                                    <th scope="col">일시책</th>
-                                    <th scope="col">건수</th>
+                                    <th scope="col" style="font-size: 1.5em;">이름</th>
+                                    <th scope="col" style="font-size: 1.5em;">매출</th>
+                                    <th scope="col" style="font-size: 1.5em;">일시책</th>
+                                    <th scope="col" style="font-size: 1.5em;">건수</th>
                                     <th scope="col" id=thday>날짜
                                         <span style=" font-size: 10px;color: gray;">조회 날짜와 같은 날짜로 입력해주세요</span></th>
                                     <th scope="col"></th>
