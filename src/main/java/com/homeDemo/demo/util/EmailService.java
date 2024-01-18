@@ -67,7 +67,7 @@ public class EmailService {
         email_contents += "※ 본 이메일은 발신 전용 입니다.";
         try {
             // 제목
-            message.setSubject("이색광고 홈페이지 -문의 접수   "+param.getSUBJECT());
+            message.setSubject("이색광고 홈페이지 : 문의 접수   "+param.getSUBJECT());
             // 받는사람
             message.addRecipient(Message.RecipientType.TO,new InternetAddress("ansgud963@gmail.com","","UTF-8"));
             message.setText(email_contents,"UTF-8","html");

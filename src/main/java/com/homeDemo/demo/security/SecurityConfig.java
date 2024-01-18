@@ -73,6 +73,8 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/"),
                                 new AntPathRequestMatcher("/question/**"),
                                 new AntPathRequestMatcher("/home"),
+                                new AntPathRequestMatcher("/css/**"),
+                                new AntPathRequestMatcher("/js/**"),
                                 new AntPathRequestMatcher("/home/**"),
                                 new AntPathRequestMatcher("/bootstrap/**"),
                                 new AntPathRequestMatcher("/lib/**")
@@ -81,7 +83,7 @@ public class SecurityConfig {
                         // ADMIN 일 때 만 접근 가능 -> 사실상 홈페이지라 의미는 없지만 우선 선언해놓음
                         .requestMatchers(
                                 new AntPathRequestMatcher("/admin/**")
-                        ).hasRole("ADMIN")
+                        ).hasAnyRole("USER","ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin ->formLogin

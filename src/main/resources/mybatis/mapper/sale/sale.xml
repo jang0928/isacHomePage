@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.homeDemo.demo.sales.SalesRepository">
+    <select id="getSaleList" resultType="SalesHistoryVO" parameterType="SalesHistoryVO">
+        SELECT DISTINCT tb1.NAME,
+                        tb2.SALE_CNT,
+                        tb2.PRICE,
+                        tb2.PROFIT,
+                        tb2.REG_DT,
+                        tb2.SALE_SEQ
+                <if test="@com.homeDemo.demo.util.CommUtil@isEmpty(REG_DT)">
+                    ,sum(DISTINCT tb2.SALE_CNT) as SUMCNT
+                    ,sum(DISTINCT tb2.PRICE) as SUMPRICE
+                    ,sum(DISTINCT tb2.PROFIT) as SUMPROFIT
+                </if>
+
+        FROM tb_member tb1
+        LEFT JOIN tb_saleshistory tb2
+            ON tb1.NAME = tb2.NAME
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(REG_DT)">
+            AND DATE(tb2.REG_DT) = #{REG_DT}
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(NAME)">
+            WHERE tb1.NAME LIKE CONCAT('%', #{NAME}, '%')
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(REG_DT)">
+            order by tb2.PRICE desc ,tb1.NAME
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isEmpty(REG_DT)">
+            group by tb1.NAME
+            order by SUMPRICE desc ,tb1.NAME
+        </if>
+        LIMIT #{pagination.limitStart}, #{recordSize}
+    </select>
+
+    <select id="saleCount" resultType="Integer" parameterType="SalesHistoryVO">
+            SELECT count(distinct tb1.NAME)
+                FROM tb_member tb1
+                LEFT JOIN tb_saleshistory tb2
+                    ON tb1.NAME = tb2.NAME
+            WHERE 1=1
+            <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(NAME)">
+                AND  tb1.NAME LIKE CONCAT('%', #{NAME}, '%')
+            </if>
+    </select>
+
+    <select id="salesCount" resultType="Integer" parameterType="SalesHistoryVO">
+        SELECT count(*) FROM tb_saleshistory
+        WHERE 1=1
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(NAME)">
+            AND  NAME LIKE CONCAT('%', #{NAME}, '%')
+        </if>
+    </select>
+
+    <select id="saleListBySeq" resultType="SalesHistoryVO" parameterType="Integer">
+        SELECT * FROM tb_saleshistory
+        WHERE 1=1
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEquals(SALE_SEQ,0)">
+            AND  SALE_SEQ =#{SALE_SEQ}
+        </if>
+    </select>
+
+    <update id="saleUpdateContent"  parameterType="SalesHistoryVO">
+        UPDATE tb_saleshistory
+        SET
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(PRICE)">
+                PRICE=#{PRICE}
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(PROFIT)">
+            ,PROFIT=#{PROFIT}
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(SALE_CNT)">
+            ,SALE_CNT=#{SALE_CNT}
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(NAME)">
+            ,NAME=#{NAME}
+        </if>
+            ,LST_MOD_DT=#{REG_DT}
+            ,LST_MOD_ID='sadmin'
+        WHERE
+            SALE_SEQ =#{SALE_SEQ}
+
+    </update>
+
+    <delete id="saleDeleteContent"  parameterType="Integer">
+       DELETE
+           FROM tb_saleshistory
+       WHERE SALE_SEQ=#{SALE_SEQ}
+    </delete>
+
+    <insert id="insertSale" parameterType="SalesHistoryVO" useGeneratedKeys="true" keyProperty="SALE_SEQ">
+        INSERT INTO tb_saleshistory (
+            NAME
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(SALE_CNT)">
+            ,SALE_CNT
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(PRICE)">
+            ,PRICE
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(PROFIT)">
+            ,PROFIT
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(REG_ID)">
+            ,REG_ID
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(REG_DT)">
+        ,REG_DT
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(REG_DT)">
+        ,LST_MOD_DT
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(LST_MOD_ID)">
+            ,LST_MOD_ID
+        </if>
+        ) VALUES (
+            #{NAME}
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(SALE_CNT)">
+            ,#{SALE_CNT}
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(PRICE)">
+            ,#{PRICE}
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(PROFIT)">
+            ,#{PROFIT}
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(REG_ID)">
+            ,#{REG_ID}
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(REG_DT)">
+              ,#{REG_DT}
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(REG_DT)">
+             ,#{REG_DT}
+        </if>
+        <if test="@com.homeDemo.demo.util.CommUtil@isNotEmpty(LST_MOD_ID)">
+            ,#{LST_MOD_ID}
+        </if>
+        )
+    </insert>
+
+
+</mapper>

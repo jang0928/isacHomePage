@@ -1,19 +1,19 @@
-package com.homeDemo.demo.question;
+package com.homeDemo.demo.sales;
 
+
+import com.homeDemo.demo.sales.SalesHistoryVO;
 
 import java.util.List;
 
-public  interface QuestionService  {
-    public List<QuestionVO> getQaList(QuestionVO param, int count);
-    public QuestionVO qaListBySeq(int seq);
+public  interface SalesService {
+    public List<SalesHistoryVO> getSaleList(SalesHistoryVO param, int count);
+    public SalesHistoryVO saleListBySeq(int seq);
 
-   public  int insertQA(QuestionVO param);
+   public  int insertSale(SalesHistoryVO param);
 
-   public int qaCount(QuestionVO param);
+   public int saleCount(SalesHistoryVO param);
 
-   public int salesCount(QuestionVO param);
+    public int saleUpdateContent(SalesHistoryVO param);
 
-    public int qaUpdateContent(QuestionVO param);
-
-    int qaDeleteContent(int param);
+    int saleDeleteContent(int param);
 }

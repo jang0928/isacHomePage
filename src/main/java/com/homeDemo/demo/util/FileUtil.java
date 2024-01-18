@@ -24,7 +24,7 @@ import java.util.UUID;
 
 @Component
 public class FileUtil {
-    private final String uploadPath = Paths.get("C:", "upload-files").toString();
+    private final String uploadPath = Paths.get("/web", "upload-files").toString();
 
     /**
      * 다중 파일 업로드

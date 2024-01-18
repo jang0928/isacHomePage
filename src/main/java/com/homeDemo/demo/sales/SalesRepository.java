@@ -1,23 +1,24 @@
 
-package com.homeDemo.demo.question;
+package com.homeDemo.demo.sales;
 
+import com.homeDemo.demo.question.QuestionVO;
 import org.apache.ibatis.annotations.Mapper;
+
+
 
 import java.util.List;
 
 @Mapper
-public interface QuestionRepository {
-    List<QuestionVO> getQaList(QuestionVO param);
+public interface SalesRepository {
+    List<SalesHistoryVO> getSaleList(SalesHistoryVO param);
 
-    QuestionVO qaListBySeq(int seq);
+    SalesHistoryVO saleListBySeq(int seq);
 
-    void insertQA(QuestionVO param);
+    void insertSale(SalesHistoryVO param);
+    int saleCount(SalesHistoryVO param);
 
-    int qaCount(QuestionVO param);
+    int saleUpdateContent(SalesHistoryVO param);
 
-    int qaUpdateContent(QuestionVO param);
+    int saleDeleteContent(int param);
 
-    int qaDeleteContent(int param);
-
-    int salesCount(QuestionVO param);
 }
