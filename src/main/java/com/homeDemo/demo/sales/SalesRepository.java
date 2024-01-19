@@ -21,4 +21,7 @@ public interface SalesRepository {
 
     int saleDeleteContent(int param);
 
+    int saleTeamCount(SalesHistoryVO param);
+
+    List<SalesHistoryVO> getTeamSaleList(SalesHistoryVO params);
 }

@@ -219,7 +219,7 @@
             }
             console.log('아오', data)
             $.ajax({
-                url: "/admin/searchSalesList.ajax",
+                url: "/admin/searchTeamList.ajax",
                 type: "post",
                 dataType: "json",
                 data: data,
@@ -232,38 +232,19 @@
 
                     for (let i = 0; i < size; i++) {
                         $('#thday').hide();
-                        let price = result.result[i].price == null ? 0 : result.result[i].price
-                        let profit = result.result[i].profit == null ? 0 : result.result[i].profit
-                        let sale_cnt = result.result[i].sale_CNT == null ? 0 : result.result[i].sale_CNT
-                        let reg_dt = result.result[i].reg_DT == null ? '등록 전 입니다.' : result.result[i].reg_DT
-                        if ($("#day").val() == null || $("#day").val() == '' || $("#day").val() == undefined) {
-                            price = result.result[i].sumprice == null ? 0 : result.result[i].sumprice
-                            sale_cnt = result.result[i].sumcnt == null ? 0 : result.result[i].sumcnt
-                            profit = result.result[i].sumprofit == null ? 0 : result.result[i].sumprofit
-                        }
+                            let price = result.result[i].sumprice == null ? 0 : result.result[i].sumprice
+                            let sale_cnt = result.result[i].sumcnt == null ? 0 : result.result[i].sumcnt
+                            let profit = result.result[i].sumprofit == null ? 0 : result.result[i].sumprofit
                         let tableTd = '<tr>';
                         // tableTd += '<td><a href=\"/admin/questionDetail?seq=' + result.result[i].sale_SEQ + '">' + result.result[i].sale_SEQ + '\</a></td>';
-                        tableTd += '<td style="font-size: 1.3em">' + result.result[i].name + '</td>';
+                        tableTd += '<td style="font-size: 1.3em">' + result.result[i].team_NAME + '</td>';
                         // tableTd += '<td> <input type="text" value="' + result.result[i].name + '"> </td>';
                         tableTd += '<td> <input type="text" value="' + price + '" id = "price"></td>';
                         // tableTd += '<td>' + profit+ '</td>';
                         tableTd += '<td> <input type="text" value="' + profit + '" id ="profit" ></td>';
                         // tableTd += '<td>' + sale_cnt + '</td>';
                         tableTd += '<td> <input type="text" value="' + sale_cnt + '" id ="sale_cnt" ></td>';
-                        tableTd += ' <input type="hidden" value="' + result.result[i].name + '" id ="name" >';
-                        tableTd += ' <input type="hidden" value="' + result.result[i].sale_SEQ + '" id ="seq" >';
                         tableTd += ' <input type="hidden" value="' + result.result[i].team_NAME + '" id ="team_name" >';
-                        if ($("#day").val() != null && $("#day").val() != '' && $("#day").val() != undefined) {
-                            baseDay = reg_dt.substring(0, 10);
-                            tableTd += '<td> <input type="date" id ="reg_dt" value = "' + baseDay + '" ></td>';
-                            // $("#reg_dt").val(baseDay)
-                            $('#thday').show();
-                        }
-                        if (result.result[i].sale_SEQ === 0) {
-                            tableTd += '<td> <button onclick="insertSale(this)" id = insertButton class="button-1"> 등록</button></td>';
-                        } else {
-                            tableTd += '<td> <button  onclick="updateSale(this)" class="button-1"> 수정</button></td>';
-                        }
                         tableTd += '</tr>';
 
                         $('#tableBody').append(tableTd);
@@ -393,8 +374,8 @@
             <ol style="
                 display: flex;
                 justify-content: center;">
-                <a href="/"><li style="font-size: 1.4em;font-weight: bold;color: #772e84;">팀원별 매출 현황  | </li></a>
-                <a href="/admin/teamSales"><li style="font-size: 1.4em;font-weight: bold;color: #772e84;">팀별 매출 현황</li></a>
+                <a href="/admin/qa"><li style="font-size: 1.4em;font-weight: bold;color: #772e84;">팀원별 매출 현황  | </li></a>
+                <a href="/"><li style="font-size: 1.4em;font-weight: bold;color: #772e84;">팀별 매출 현황</li></a>
             </ol>
 
             <section class="section">
@@ -404,24 +385,6 @@
                         <div class="card" style="padding: 3em;">
                             <div class="card-body">
                                 <div class="datatable-dropdown">
-                                    <label>
-                                        <select class="datatable-selector" id="pageSize">
-                                            <option value="1">1</option>
-                                            <option value="5">5</option>
-                                            <option value="10" selected="">10</option>
-                                            <option value="15">15</option>
-                                            <option value="20">20</option>
-                                            <option value="25">25</option>
-                                        </select> entries per page
-                                    </label>
-                                    <label>
-                                        <input type="date" name="day" id="day">
-                                    </label>
-                                    <ab style="padding-left: 3em;">
-                                        <input class="datatable-input" id="comSearch" placeholder="이름" value=""
-                                               type="text" title="Search within table" onkeyup="enterkey()" style="border-bottom: 1px solid;">
-                                        <button onclick='search()' class="button-1"> 조회</button>
-                                    </ab>
                                 </div>
                             </div>
                             <!-- Table with stripped rows -->
@@ -431,13 +394,10 @@
 
                                 <tr>
 
-                                    <th scope="col" style="font-size: 1.5em;">이름</th>
+                                    <th scope="col" style="font-size: 1.5em;">팀명</th>
                                     <th scope="col" style="font-size: 1.5em;">매출</th>
                                     <th scope="col" style="font-size: 1.5em;">일시책</th>
                                     <th scope="col" style="font-size: 1.5em;">건수</th>
-                                    <th scope="col" id=thday>날짜
-                                        <span style=" font-size: 10px;color: gray;">조회 날짜와 같은 날짜로 입력해주세요</span></th>
-                                    <th scope="col"></th>
                                 </tr>
                                 </thead>
                                 <tbody id="tableBody">

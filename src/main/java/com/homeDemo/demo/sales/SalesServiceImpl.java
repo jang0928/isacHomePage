@@ -23,6 +23,15 @@ public class SalesServiceImpl implements SalesService {
     }
 
     @Override
+    public List<SalesHistoryVO> getTeamSaleList(SalesHistoryVO params, int count) {
+        Pagenation pagination = new Pagenation(count, params);
+        params.setPagination(pagination);
+        // 계산된 페이지 정보의 일부(limitStart, recordSize)를 기준으로 리스트 데이터 조회 후 응답 데이터 반환
+        List<SalesHistoryVO> Teamlist = salesRepository.getTeamSaleList(params);
+        return Teamlist;
+    }
+
+    @Override
     public SalesHistoryVO saleListBySeq(int seq) {
         return null;
     }
@@ -36,6 +45,11 @@ public class SalesServiceImpl implements SalesService {
     @Override
     public int saleCount(SalesHistoryVO param) {
         return salesRepository.saleCount(param);
+    }
+
+    @Override
+    public int saleTeamCount(SalesHistoryVO param) {
+        return salesRepository.saleTeamCount(param);
     }
 
     @Override

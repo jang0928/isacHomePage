@@ -10,6 +10,7 @@ import java.util.Date;
 public class SalesHistoryVO extends PaigingVO {
     private int SALE_SEQ;
     private String NAME;
+    private String TEAM_NAME;
     private Integer SALE_CNT;
     private Float PRICE;
     private Float PROFIT;
